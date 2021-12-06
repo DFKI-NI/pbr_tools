@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Teletransport a model in gazebo by making it follow a move base robot plan -->
+
+  <!-- ::: arguments ::: -->
+  <arg name="model_name" default="worker" /> <!--the name of the model you want to move around-->
+  <arg name="x_offset_at_start" default="0.0" /> <!--useful if your model is hit by the laser of your robot and gets added to the costmap-->
+  <arg name="y_offset_at_start" default="0.0" />
+  <arg name="z_offset_at_start" default="0.0" />
+  <arg name="roll_offset_at_start" default="0.0" />
+  <arg name="pitch_offset_at_start" default="0.0" />
+  <arg name="yaw_offset_at_start" default="0.0" />
+
+  <arg name="x_offset_during_execution" default="0.0" /> <!--control the heading of your model throughout the entire trajectory-->
+  <arg name="y_offset_during_execution" default="0.0" />
+  <arg name="z_offset_during_execution" default="0.0" />
+  <arg name="roll_offset_during_execution" default="0.0" />
+  <arg name="pitch_offset_during_execution" default="0.0" />
+  <arg name="yaw_offset_during_execution" default="0.0" />
+
+  <arg name="robot_base_frame" default="mobipick/base_footprint" /> <!--usually base link or base footprint-->
+  <arg name="robot_navigation_frame" default="map" /> <!--reference frame in which the navigation of the robot is configured-->
+  <arg name="robot_move_base_make_plan_srv_name" default="/mobipick/move_base_node/make_plan" /> <!--robot move base make plan service name-->
+  <arg name="robot_gazebo_model_name" default="mobipick" /> <!--the name of your robot model in gazebo-->
+
+  <!-- gazebo model navigation node -->
+  <node pkg="pbr_gazebo" type="gazebo_model_navigation.py" name="gazebo_worker_navigation" output="screen" >
+    <param name="model_name" value="$(arg model_name)" />
+    <param name="x_offset_at_start" value="$(arg x_offset_at_start)" />
+    <param name="y_offset_at_start" value="$(arg y_offset_at_start)" />
+    <param name="z_offset_at_start" value="$(arg z_offset_at_start)" />
+    <param name="roll_offset_at_start" value="$(arg roll_offset_at_start)" />
+    <param name="pitch_offset_at_start" value="$(arg pitch_offset_at_start)" />
+    <param name="yaw_offset_at_start" value="$(arg yaw_offset_at_start)" />
+    
+    <param name="x_offset_during_execution" value="$(arg x_offset_during_execution)" />
+    <param name="y_offset_during_execution" value="$(arg y_offset_during_execution)" />
+    <param name="z_offset_during_execution" value="$(arg z_offset_during_execution)" />
+    <param name="roll_offset_during_execution" value="$(arg roll_offset_during_execution)" />
+    <param name="pitch_offset_during_execution" value="$(arg pitch_offset_during_execution)" />
+    <param name="yaw_offset_during_execution" value="$(arg yaw_offset_during_execution)" />
+    
+    <param name="robot_base_frame" value="$(arg robot_base_frame)" />
+    <param name="robot_navigation_frame" value="$(arg robot_navigation_frame)" />
+    <param name="robot_move_base_make_plan_srv_name" value="$(arg robot_move_base_make_plan_srv_name)" />
+    <param name="robot_gazebo_model_name" value="$(arg robot_gazebo_model_name)" />
+  </node>
+
+</launch>
