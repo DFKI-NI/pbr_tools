@@ -35,10 +35,17 @@
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>object_msgs</build_depend>
+  <build_depend>tf</build_depend>
   <build_depend>vision_msgs</build_depend>
+  <run_depend>gazebo_msgs</run_depend>
   <run_depend>gazebo_ros</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>nav_msgs</run_depend>
   <run_depend>object_msgs</run_depend>
   <run_depend>pbr_maps</run_depend>
+  <run_depend>pbr_msgs</run_depend>
+  <run_depend>tf2_ros</run_depend>
+  <run_depend>tf</run_depend>
   <run_depend>vision_msgs</run_depend>
 
   <export>
