@@ -5,7 +5,11 @@ add_definitions(-std=c++11)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp tf object_msgs vision_msgs
+find_package(catkin REQUIRED COMPONENTS
+  object_msgs
+  roscpp
+  tf
+  vision_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -100,7 +104,11 @@ find_package(catkin REQUIRED COMPONENTS roscpp tf object_msgs vision_msgs
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES pbr_gazebo
-#  CATKIN_DEPENDS
+  CATKIN_DEPENDS
+    object_msgs
+    roscpp
+    tf
+    vision_msgs
 #  DEPENDS system_lib
 )
 
@@ -134,13 +142,20 @@ add_executable(fake_object_recognition src/FakeObjectRecognition.cpp)
 add_dependencies(fake_object_recognition ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
- target_link_libraries(fake_object_recognition
-   ${catkin_LIBRARIES}
- )
+target_link_libraries(fake_object_recognition
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
 #############
+
+# Mark executable scripts (Python etc.) for installation
+# in contrast to setup.py, you can choose the destination
+catkin_install_python(PROGRAMS
+  nodes/gazebo_model_navigation.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 # Mark executables and/or libraries for installation
 install(TARGETS fake_object_recognition
