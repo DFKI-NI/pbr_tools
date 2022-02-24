@@ -1,0 +1,13 @@
+# Make a robot move base plan and let a gazebo model follow that plan
+
+# no need for this pose! is taken from the topic: gazebo_model_states
+# geometry_msgs/PoseStamped initial_model_pose
+
+# The final desired pose of the model
+geometry_msgs/PoseStamped goal_model_pose
+
+# The speed at which to control the model teletransportation
+float32 speed
+---
+# whether the gazebo model succesfully followed the trajectory or not
+bool success

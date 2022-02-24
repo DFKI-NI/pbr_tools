@@ -8,7 +8,7 @@ from gazebo_msgs.srv import SetModelState
 from gazebo_msgs.msg import ModelState
 from gazebo_msgs.msg import ModelStates
 from nav_msgs.srv import GetPlan
-from pbr_msgs.srv import MoveGazeboModel, MoveGazeboModelResponse
+from pbr_gazebo.srv import MoveGazeboModel, MoveGazeboModelResponse
 
 import numpy as np
 
