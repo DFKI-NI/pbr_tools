@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+
+import time
+import rospy
+from std_srvs.srv import Empty
+
+
+if __name__ == '__main__':
+    rospy.init_node('gazebo_unpauser')
+    rospy.wait_for_service('/gazebo/unpause_physics')
+    time.sleep(10.0)
+    rospy.ServiceProxy('/gazebo/unpause_physics', Empty)()
+    rospy.loginfo('I have unpaused the simulation')
