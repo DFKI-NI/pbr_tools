@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="pbr_cic">
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <!-- A ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <model name="pbr_cic">
+      <static>true</static>
+      <link name="pbr_cic_link">
+        <pose>0 0 0 0 0 0</pose>
+        <collision name="pbr_cic_collision">
+          <geometry>
+            <mesh>
+              <uri>file://pbr_cic.stl</uri>
+              <scale>1.0 1.0 1.0</scale>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name="pbr_cic_visual">
+          <cast_shadows>false</cast_shadows>
+          <geometry>
+            <mesh>
+              <uri>file://pbr_cic.stl</uri>
+              <scale>1.0 1.0 1.0</scale>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose frame=''>26.0013 1.21033 16.6472 -0 0.8298 1.91217</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+  </world>
+</sdf>
