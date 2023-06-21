@@ -1,0 +1,8 @@
+# Convention used to store and name new maps
+
+world/world_config/map.yaml
+world/world_config/map_virtual_walls.yaml
+
+world: a real or simulated environment, e.g. cic, moelk
+world_config: a particular object arrangement within the previous world, e.g.
+              table_1 located at ..., table_2 located at ... (only objs which have an impact on the map)
