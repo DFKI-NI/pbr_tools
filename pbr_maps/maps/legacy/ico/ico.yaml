@@ -1,4 +1,4 @@
-image: map.pgm
+image: ico.pgm
 resolution: 0.050000
 origin: [-37.830417, -5.066224, 0.000000]
 negate: 0
