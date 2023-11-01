@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="sand_cube">
+    <static>false</static>
+    <link name="cube">
+      <collision name="cube_collision">
+        <geometry>
+          <box>
+            <size>0.06 0.06 0.06</size>
+          </box>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <mu2>0.5</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="cube_visual">
+        <geometry>
+          <box>
+            <size>0.06 0.06 0.06</size>
+          </box>
+        </geometry>
+        <material>
+          <!-- see: https://classic.gazebosim.org/tutorials?tut=color_model -->
+          <ambient>0.4 0.4 0.4</ambient> <!--RGB light emmitted on object-->
+          <diffuse>0.741 0.69 0.545 1</diffuse> <!--sand-->
+          <specular>0.1 0.1 0.1 1 1</specular>
+          <emissive>0 0 0 1</emissive>
+        </material>
+      </visual>
+      <inertial>
+        <mass>0.3</mass>
+        <inertia>
+          <ixx>0.00018</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00018</iyy>
+          <iyz>0</iyz>
+          <izz>0.00018</izz>
+        </inertia>
+        <pose>0 0 0 0 0 0</pose>
+      </inertial>
+    </link>
+  </model>
+</sdf>
