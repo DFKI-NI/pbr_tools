@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot name="ai_day_sensors" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- world reference frame -->
+  <link name="world"/>
+
+  <!-- camera looking at the worker assembly process -->
+  <xacro:include filename="$(find pbr_gazebo)/urdf/rgb_camera.gazebo.xacro" />
+  <xacro:rgb_camera camera_name="worker_cam"/>
+  <joint name="world_to_worker_cam" type="fixed">
+    <parent link="worker_cam_stick_box"/>
+    <child link="worker_cam_box_link"/>
+    <origin xyz="0.05 0 0.54" rpy="-2.8 0 -1.57"/>
+  </joint>
+  <!-- put camera on a stick so that it doesn't look like is flying -->
+  <xacro:include filename="$(find pbr_gazebo)/urdf/box.gazebo.xacro" />
+  <xacro:box name="worker_cam_stick" width="0.03" length="0.04" height="0.5" color="Black" />
+  <joint name="world_to_worker_cam_stick_box" type="fixed">
+    <parent link="world"/>
+    <child link="worker_cam_stick_box"/>
+    <origin xyz="18.7 15.25 0.72" rpy="0 0 0"/>
+  </joint>
+
+  <!-- camera looking at the insect hotel parts next to the worker -->
+  <xacro:rgb_camera camera_name="parts_cam"/>
+  <joint name="world_to_parts_cam" type="fixed">
+    <parent link="parts_cam_stick_box"/>
+    <child link="parts_cam_box_link"/>
+    <origin xyz="0.05 0 0.54" rpy="-2.8 0 -1.57"/>
+  </joint>
+  <!-- put camera on a stick so that it doesn't look like is flying -->
+  <xacro:box name="parts_cam_stick" width="0.03" length="0.04" height="0.5" color="Black" />
+  <joint name="world_to_parts_cam_stick_box" type="fixed">
+    <parent link="world"/>
+    <child link="parts_cam_stick_box"/>
+    <origin xyz="18.7 14.8 0.72" rpy="0 0 0"/>
+  </joint>
+
+</robot>
