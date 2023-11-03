@@ -27,9 +27,10 @@
         </geometry>
         <material>
           <!-- see: https://classic.gazebosim.org/tutorials?tut=color_model -->
-          <ambient>0.4 0.4 0.4</ambient> <!--RGB light emmitted on object-->
-          <diffuse>1.0 0.804 0.0 1</diffuse>    <!--yellow-->
-          <specular>0.1 0.1 0.1 1 1</specular>
+          <!-- yellow (traffic yellow, RAL 1023) -->
+          <ambient>1.0 0.843 0.0 1</ambient>
+          <diffuse>1.0 0.843 0.0 1</diffuse>
+          <specular>1.0 0.843 0.0 1</specular>
           <emissive>0 0 0 1</emissive>
         </material>
       </visual>
