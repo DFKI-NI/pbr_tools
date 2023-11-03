@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <sdf version="1.6">
-  <model name="black_cube">
+  <model name="sand_part">
     <static>false</static>
-    <link name="cube">
-      <collision name="cube_collision">
+    <link name="part">
+      <collision name="part_collision">
         <geometry>
           <box>
             <size>0.06 0.06 0.06</size>
@@ -19,7 +19,7 @@
           </friction>
         </surface>
       </collision>
-      <visual name="cube_visual">
+      <visual name="part_visual">
         <geometry>
           <box>
             <size>0.06 0.06 0.06</size>
@@ -27,9 +27,9 @@
         </geometry>
         <material>
           <!-- see: https://classic.gazebosim.org/tutorials?tut=color_model -->
-          <ambient>0.1 0.1 0.1 1</ambient>
-          <diffuse>0.1 0.1 0.2 1</diffuse>
-          <specular>0 0 0 0</specular>
+          <ambient>0.4 0.4 0.4</ambient> <!--RGB light emmitted on object-->
+          <diffuse>0.741 0.69 0.545 1</diffuse> <!--sand-->
+          <specular>0.1 0.1 0.1 1 1</specular>
           <emissive>0 0 0 1</emissive>
         </material>
       </visual>

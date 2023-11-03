@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <sdf version="1.6">
-  <model name="purple_cube">
+  <model name="bright_green_part">
     <static>false</static>
-    <link name="cube">
-      <collision name="cube_collision">
+    <link name="part">
+      <collision name="part_collision">
         <geometry>
           <box>
             <size>0.06 0.06 0.06</size>
@@ -19,7 +19,7 @@
           </friction>
         </surface>
       </collision>
-      <visual name="cube_visual">
+      <visual name="part_visual">
         <geometry>
           <box>
             <size>0.06 0.06 0.06</size>
@@ -28,7 +28,7 @@
         <material>
           <!-- see: https://classic.gazebosim.org/tutorials?tut=color_model -->
           <ambient>0.4 0.4 0.4</ambient> <!--RGB light emmitted on object-->
-          <diffuse>0.635 0.0 1.0 1</diffuse>    <!--purple-->
+          <diffuse>0.0 0.776 0.698 1</diffuse>  <!--bright_green-->
           <specular>0.1 0.1 0.1 1 1</specular>
           <emissive>0 0 0 1</emissive>
         </material>
