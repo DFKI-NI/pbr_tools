@@ -1,6 +1,60 @@
-<?xml version="1.0" ?> 
+<?xml version="1.0" ?>
 <sdf version="1.5">
   <world name="pbr_moelk">
+
+    <!-- physics profile: fast, see: https://classic.gazebosim.org/tutorials?tut=preset_manager&cat=physics -->
+    <physics name="fast" type="ode" default="true">
+      <gravity>0.0 0.0 -9.8</gravity>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>50</iters>
+          <sor>1.3</sor>
+        </solver>
+        <constraints>
+          <cfm>0.0</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>100.0</contact_max_correcting_vel>
+          <contact_surface_layer>0.001</contact_surface_layer>
+        </constraints>
+      </ode>
+
+      <!-- the combination of the next 2 parameters makes simulation faster,
+           see: https://ceti.pages.st.inf.tu-dresden.de/robotics/howtos/SimulationSpeed.html -->
+      <real_time_update_rate>0.0</real_time_update_rate>
+      <max_step_size>0.003</max_step_size>
+
+      <real_time_factor>1.0</real_time_factor>
+      <max_contacts>20</max_contacts>
+    </physics>
+
+    <!-- physics profile: slow, see: https://classic.gazebosim.org/tutorials?tut=preset_manager&cat=physics -->
+    <physics name="slow" type="ode">
+      <gravity>0.0 0.0 -9.8</gravity>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>50</iters>
+          <sor>1.3</sor>
+        </solver>
+        <constraints>
+          <cfm>0.0</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>100.0</contact_max_correcting_vel>
+          <contact_surface_layer>0.001</contact_surface_layer>
+        </constraints>
+      </ode>
+
+      <!-- the combination of the next 2 parameters makes simulation slow,
+           see: https://ceti.pages.st.inf.tu-dresden.de/robotics/howtos/SimulationSpeed.html
+           this values are the default ones from gazebo -->
+      <real_time_update_rate>1000.0</real_time_update_rate>
+      <max_step_size>0.001</max_step_size>
+
+      <real_time_factor>1.0</real_time_factor>
+      <max_contacts>20</max_contacts>
+    </physics>
+
     <!-- A global light source -->
     <include>
       <uri>model://sun</uri>
