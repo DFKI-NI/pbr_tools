@@ -24,7 +24,6 @@
       <real_time_update_rate>0.0</real_time_update_rate>
       <max_step_size>0.003</max_step_size>
 
-      <real_time_factor>1.0</real_time_factor>
       <max_contacts>20</max_contacts>
     </physics>
 
@@ -51,7 +50,6 @@
       <real_time_update_rate>1000.0</real_time_update_rate>
       <max_step_size>0.001</max_step_size>
 
-      <real_time_factor>1.0</real_time_factor>
       <max_contacts>20</max_contacts>
     </physics>
 
