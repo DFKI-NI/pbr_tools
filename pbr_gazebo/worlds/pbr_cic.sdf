@@ -21,7 +21,7 @@
 
       <!-- the combination of the next 2 parameters makes simulation faster,
            see: https://ceti.pages.st.inf.tu-dresden.de/robotics/howtos/SimulationSpeed.html -->
-      <real_time_update_rate>0.0</real_time_update_rate>
+      <real_time_update_rate>0.0</real_time_update_rate>  <!-- run as fast as possible -->
       <max_step_size>0.003</max_step_size>
 
       <max_contacts>20</max_contacts>
@@ -47,7 +47,7 @@
       <!-- the combination of the next 2 parameters makes simulation slow,
            see: https://ceti.pages.st.inf.tu-dresden.de/robotics/howtos/SimulationSpeed.html
            this values are the default ones from gazebo -->
-      <real_time_update_rate>1000.0</real_time_update_rate>
+      <real_time_update_rate>1000.0</real_time_update_rate>  <!-- simulate max. 1000 steps per second (wall time) -->
       <max_step_size>0.001</max_step_size>
 
       <max_contacts>20</max_contacts>
