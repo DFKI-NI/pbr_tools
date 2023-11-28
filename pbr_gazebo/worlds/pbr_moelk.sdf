@@ -4,7 +4,7 @@
 
     <!-- physics profile: fast, see: https://classic.gazebosim.org/tutorials?tut=preset_manager&cat=physics -->
     <physics name="fast" type="ode" default="true">
-      <gravity>0.0 0.0 -9.8</gravity>
+      <gravity>0.0 0.0 -9.81</gravity>
       <ode>
         <solver>
           <type>quick</type>
@@ -30,12 +30,12 @@
 
     <!-- physics profile: slow, see: https://classic.gazebosim.org/tutorials?tut=preset_manager&cat=physics -->
     <physics name="slow" type="ode">
-      <gravity>0.0 0.0 -9.8</gravity>
+      <gravity>0.0 0.0 -9.81</gravity>
       <ode>
         <solver>
           <type>quick</type>
-          <iters>50</iters>
-          <sor>1.3</sor>
+          <iters>20</iters>
+          <sor>1.0</sor>
         </solver>
         <constraints>
           <cfm>0.0</cfm>
