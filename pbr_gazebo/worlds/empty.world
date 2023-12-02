@@ -83,7 +83,7 @@
           <max_contacts>10</max_contacts>
         </collision>
         <visual name="visual">
-          <cast_shadows>0</cast_shadows>
+          <cast_shadows>0</cast_shadows>  <!-- even if the global light source has shadows, this object would not cast shadows -->
           <geometry>
             <plane>
               <normal>0.000000 0.000000 1.000000</normal>

@@ -76,7 +76,7 @@
           </geometry>
         </collision>
         <visual name="pbr_moelk_visual">
-          <cast_shadows>false</cast_shadows>
+          <cast_shadows>false</cast_shadows> <!-- even if the global light source has shadows, this object would not cast shadows -->
           <geometry>
             <mesh>
               <uri>file://pbr_robot_lab.stl</uri>
