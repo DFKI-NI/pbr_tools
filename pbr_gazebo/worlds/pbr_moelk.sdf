@@ -55,7 +55,8 @@
 
     <!-- A global light source -->
     <include>
-      <uri>model://sun</uri>
+      <!-- <uri>model://sun</uri> --> <!-- sun with shadows -->
+      <uri>model://sun_without_shadows</uri> <!-- sun without shadows: saves computation -->
     </include>
     <!-- A ground plane -->
     <include>
