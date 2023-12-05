@@ -55,7 +55,6 @@
   <run_depend>vision_msgs</run_depend>
 
   <export>
-    <gazebo_ros gazebo_model_path="${prefix}/Media/models/"/>
-    <gazebo_ros gazebo_media_path="${prefix}"/>
+    <gazebo_ros gazebo_media_path="${prefix}" gazebo_model_path="${prefix}/models/"/>
   </export>
 </package>
