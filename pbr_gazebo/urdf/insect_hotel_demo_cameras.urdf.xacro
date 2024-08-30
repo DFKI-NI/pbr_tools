@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<robot name="worker_cameras" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- camera looking at the insect hotel parts next to the worker -->
+  <xacro:include filename="$(find pbr_gazebo)/urdf/rgb_camera.gazebo.xacro" />
+  <xacro:rgb_camera camera_name="inventory_cam"/>
+  <joint name="inventory_cam_stick_to_inventory_cam" type="fixed">
+    <parent link="inventory_cam_stick_box"/>
+    <child link="inventory_cam_box_link"/>
+    <origin xyz="0 0 0" rpy="3.14 0 -1.57"/>
+  </joint>
+  <!-- put camera on a stick so that it doesn't look like is flying -->
+  <xacro:include filename="$(find pbr_gazebo)/urdf/box.gazebo.xacro" />
+  <xacro:box name="inventory_cam_stick" width="0.03" length="0.04" height="0.5" color="Black" />
+  <joint name="scaffold_to_inventory_cam_stick_box" type="fixed">
+    <parent link="scaffold_box"/>
+    <child link="inventory_cam_stick_box"/>
+    <origin xyz="0 -1.16 -0.5" rpy="0 0 0"/>
+  </joint>
+
+  <!-- camera looking at the worker assembly process -->
+  <xacro:rgb_camera camera_name="worker_cam"/>
+  <joint name="worker_cam_stick_to_worker_cam" type="fixed">
+    <parent link="worker_cam_stick_box"/>
+    <child link="worker_cam_box_link"/>
+    <origin xyz="0 0 0" rpy="3.14 0 -1.57"/>
+  </joint>
+  <!-- put camera on a stick so that it doesn't look like is flying -->
+  <xacro:box name="worker_cam_stick" width="0.03" length="0.04" height="0.5" color="Black" />
+  <joint name="scaffold_to_worker_cam_stick_box" type="fixed">
+    <parent link="scaffold_box"/>
+    <child link="worker_cam_stick_box"/>
+    <origin xyz="0 -0.3 -0.5" rpy="0 0 0"/>
+  </joint>
+
+  <!-- stick going to wall -->
+  <xacro:box name="scaffold" width="0.03" length="2.6" height="0.04" color="Black" />
+
+  <link name="worker_cameras_link"/>
+  <joint name="camera_link_to_scaffold" type="fixed">
+    <parent link="worker_cameras_link"/>
+    <child link="scaffold_box"/>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+
+  <gazebo>
+    <static>true</static>
+  </gazebo>
+
+</robot>

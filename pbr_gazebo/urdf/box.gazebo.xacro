@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<robot name="box" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="box" params="name width length height cwidth:=0 clength:=0 cheight:=0 color">
+    <link name="${name}_box">
+      <visual>
+        <origin xyz="0 0 ${height/2.0}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${width} ${length} ${height}"/>
+        </geometry>
+        <material name="orange"> <!-- rviz will use this color -->
+          <color rgba="${255/255} ${108/255} ${10/255} 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 ${cheight/2.0}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${cwidth} ${clength} ${cheight}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.2"/>
+        <inertia ixx="2.2124416e-03" ixy="-1.2294101e-05" ixz="3.4938785e-05"
+                iyy="2.1193702e-03" iyz="-5.0120904e-06"
+                izz="2.0064271e-03" />
+      </inertial>
+    </link>
+    <gazebo reference="${name}_box">
+      <material>Gazebo/${color}</material> <!-- gazebo will use this color -->
+    </gazebo>
+  </xacro:macro>
+
+  <!-- example on how to call this macro -->
+  <!--<xacro:box name="laser_stand" width="0.2" length="0.2" height="1.0" color="Orange" />-->
+
+</robot>
