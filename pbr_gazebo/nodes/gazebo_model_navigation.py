@@ -1,9 +1,38 @@
 #!/usr/bin/env python3
 
-import rospy
-import tf, tf2_ros
+# Copyright (c) 2021-2024, DFKI GmbH
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+#    * Redistributions of source code must retain the above copyright
+#      notice, this list of conditions and the following disclaimer.
+#
+#    * Redistributions in binary form must reproduce the above copyright
+#      notice, this list of conditions and the following disclaimer in the
+#      documentation and/or other materials provided with the distribution.
+#
+#    * Neither the name of the copyright holder nor the names of its
+#      contributors may be used to endorse or promote products derived from
+#      this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
 
-from geometry_msgs.msg import Pose, PoseStamped, TransformStamped
+import rospy
+import tf
+import tf2_ros
+
+from geometry_msgs.msg import PoseStamped, TransformStamped
 from gazebo_msgs.srv import SetModelState
 from gazebo_msgs.msg import ModelState
 from gazebo_msgs.msg import ModelStates
@@ -12,14 +41,17 @@ from pbr_gazebo.srv import MoveGazeboModel, MoveGazeboModelResponse
 
 import numpy as np
 
+
 class GazeboModelNavigation:
     '''
     Navigate a model in gazebo by making a move base robot plan
     and applying it to the model using teletransportation ("set model pose" gazebo service calls)
     Usage: run the node and publish a geometry_msgs/PoseStamped msg on the topic: '/<model_name>/goal_pose
     e.g. /worker/goal_pose'
-    Alternatively call the service offered by this node of type "MoveGazeboModel", with name : <node_name>/start_navigation
+    Alternatively, call the service offered by this node of type
+    "MoveGazeboModel", with name : <node_name>/start_navigation
     '''
+
     def __init__(self):
         self.model_name = rospy.get_param('~model_name', 'my_gazebo_model')
         # offset at start: if the model is detected by the robot laser scanner the plan would not be possible
@@ -30,8 +62,14 @@ class GazeboModelNavigation:
         roll_offset_at_start = rospy.get_param('~roll_offset_at_start', 0.0)
         pitch_offset_at_start = rospy.get_param('~pitch_offset_at_start', 0.0)
         yaw_offset_at_start = rospy.get_param('~yaw_offset_at_start', 0.0)
-        self.offset_at_start=[x_offset_at_start, y_offset_at_start, z_offset_at_start,
-                              roll_offset_at_start, pitch_offset_at_start, yaw_offset_at_start]
+        self.offset_at_start = [
+            x_offset_at_start,
+            y_offset_at_start,
+            z_offset_at_start,
+            roll_offset_at_start,
+            pitch_offset_at_start,
+            yaw_offset_at_start,
+        ]
         # offset during execution: useful to apply a constant offset (usually angular) to the model
         # throghout the entire trajectory
         x_offset_during_execution = rospy.get_param('~x_offset_during_execution', 0.0)
@@ -40,14 +78,20 @@ class GazeboModelNavigation:
         roll_offset_during_execution = rospy.get_param('~roll_offset_during_execution', 0.0)
         pitch_offset_during_execution = rospy.get_param('~pitch_offset_during_execution', 0.0)
         yaw_offset_during_execution = rospy.get_param('~yaw_offset_during_execution', 0.0)
-        self.offset_during_execution = [x_offset_during_execution, y_offset_during_execution,
-                                        z_offset_during_execution, roll_offset_during_execution,
-                                        pitch_offset_during_execution, yaw_offset_during_execution]
-        
+        self.offset_during_execution = [
+            x_offset_during_execution,
+            y_offset_during_execution,
+            z_offset_during_execution,
+            roll_offset_during_execution,
+            pitch_offset_during_execution,
+            yaw_offset_during_execution,
+        ]
+
         self.robot_base_frame = rospy.get_param('~robot_base_frame', 'mobipick/base_footprint')
         self.robot_navigation_frame = rospy.get_param('~robot_navigation_frame', 'map')
-        self.robot_move_base_make_plan_srv_name = rospy.get_param('~robot_move_base_make_plan_srv_name',
-                                                                  '/mobipick/move_base_node/make_plan')
+        self.robot_move_base_make_plan_srv_name = rospy.get_param(
+            '~robot_move_base_make_plan_srv_name', '/mobipick/move_base_node/make_plan'
+        )
         self.robot_gazebo_model_name = rospy.get_param('~robot_gazebo_model_name', 'mobipick')
         # flag to indicate that a model goal pose was received in the topic
         self.model_goal_request_received = False
@@ -57,20 +101,23 @@ class GazeboModelNavigation:
         self.pub_start_pose = rospy.Publisher('~start_pose', PoseStamped, queue_size=1)
         self.pub_path_pose = rospy.Publisher('~path_pose', PoseStamped, queue_size=1)
         # subscribe to model goal pose
-        rospy.Subscriber(f'~goal_pose', PoseStamped, self.ModelGoalPoseCB, queue_size=1)
+        rospy.Subscriber('~goal_pose', PoseStamped, self.ModelGoalPoseCB, queue_size=1)
         self.tf_listener = tf.TransformListener()
         # setup service to move gazebo model
-        rospy.Service(f'~start_navigation', MoveGazeboModel, self.handle_gazebo_model_navigation)
+        rospy.Service('~start_navigation', MoveGazeboModel, self.handle_gazebo_model_navigation)
         rospy.sleep(0.5)
         # get transform from world to map and publish to tf
         self.compute_tf_world_2_map()
 
     def handle_gazebo_model_navigation(self, req):
         rospy.loginfo(f'received (service) request to navigate the model: {self.model_name}')
-        self.model_navigation(self.model_name, req.goal_model_pose,
-                                      offset_at_start=self.offset_at_start,
-                                      offset_during_execution=self.offset_during_execution,
-                                      speed=req.speed)
+        self.model_navigation(
+            self.model_name,
+            req.goal_model_pose,
+            offset_at_start=self.offset_at_start,
+            offset_during_execution=self.offset_during_execution,
+            speed=req.speed,
+        )
         resp = MoveGazeboModelResponse()
         resp.success = True
         return resp
@@ -139,9 +186,9 @@ class GazeboModelNavigation:
             resp1 = set_model_state(request_msg)
             return resp1.success
         except rospy.ServiceException as e:
-            print("Service call failed: %s"%e)
+            print("Service call failed: %s" % e)
 
-    def make_plan(self, start_pose, goal_pose, tolerance = 0.5):
+    def make_plan(self, start_pose, goal_pose, tolerance=0.5):
         '''
         call move base srv to make a navigation plan for the robot and return it if one was found
         '''
@@ -157,17 +204,21 @@ class GazeboModelNavigation:
             resp = move_base_make_plan_srv(start_pose, goal_pose, tolerance)
             return resp.plan
         except rospy.ServiceException as e:
-            print("Service call failed: %s"%e)
+            print("Service call failed: %s" % e)
             return None
 
     def make_transform_from_pose_stamped(self, pose_stamped_msg):
-        rot = [pose_stamped_msg.pose.orientation.x, pose_stamped_msg.pose.orientation.y,
-               pose_stamped_msg.pose.orientation.z, pose_stamped_msg.pose.orientation.w]
+        rot = [
+            pose_stamped_msg.pose.orientation.x,
+            pose_stamped_msg.pose.orientation.y,
+            pose_stamped_msg.pose.orientation.z,
+            pose_stamped_msg.pose.orientation.w,
+        ]
         euler_rot = tf.transformations.euler_from_quaternion(rot)
         transform = tf.transformations.euler_matrix(euler_rot[0], euler_rot[1], euler_rot[2])
-        transform[0][3] = pose_stamped_msg.pose.position.x # pborg x
-        transform[1][3] = pose_stamped_msg.pose.position.y # pborg y
-        transform[2][3] = pose_stamped_msg.pose.position.z # pborg z
+        transform[0][3] = pose_stamped_msg.pose.position.x  # pborg x
+        transform[1][3] = pose_stamped_msg.pose.position.y  # pborg y
+        transform[2][3] = pose_stamped_msg.pose.position.z  # pborg z
         return transform
 
     def make_pose_stamped_from_transform(self, transform, frame_id):
@@ -202,8 +253,9 @@ class GazeboModelNavigation:
         broadcaster.sendTransform(static_transformStamped)
 
     def compute_tf_world_2_map(self):
-        amcl_robot_pose = self.get_robot_pose(robot_frame=self.robot_base_frame,
-                                              global_frame=self.robot_navigation_frame)
+        amcl_robot_pose = self.get_robot_pose(
+            robot_frame=self.robot_base_frame, global_frame=self.robot_navigation_frame
+        )
         gazebo_robot_pose = self.get_model_pose(self.robot_gazebo_model_name)
         # make transforms
         robot2map_tf = self.make_transform_from_pose_stamped(amcl_robot_pose)
@@ -216,8 +268,7 @@ class GazeboModelNavigation:
         self.world2map_tf = np.dot(robot2map_tf, world2robot_tf)
 
         # send static transform to ros (world to map)
-        self.broadcast_tf(self.map2world_tf, parent_frame_id='world',
-                          child_frame_id=self.robot_navigation_frame)
+        self.broadcast_tf(self.map2world_tf, parent_frame_id='world', child_frame_id=self.robot_navigation_frame)
 
     def make_pose_stamped_msg(self, frame_id, px, py, pz, ox, oy, oz, ow):
         pose_stamped_msg = PoseStamped()
@@ -232,24 +283,21 @@ class GazeboModelNavigation:
         return pose_stamped_msg
 
     def transform_pose(self, input_pose, target_reference_frame):
-        if input_pose == None:
+        if input_pose is None:
             rospy.logerr('failed to transform pose: input pose cannot be None')
             return None
         # transform to target reference frame
         current_reference_frame = input_pose.header.frame_id
         try:
             now = rospy.Time.now()
-            self.tf_listener.waitForTransform(current_reference_frame,
-                            target_reference_frame, now, rospy.Duration(1.0))
-            (trans, rot) = self.tf_listener.lookupTransform(
-                            current_reference_frame, target_reference_frame, now)
+            self.tf_listener.waitForTransform(current_reference_frame, target_reference_frame, now, rospy.Duration(1.0))
+            (trans, rot) = self.tf_listener.lookupTransform(current_reference_frame, target_reference_frame, now)
         except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
-            rospy.logwarn(
-                f'failed to lookup transform from {current_reference_frame} to {target_reference_frame}')
+            rospy.logwarn(f'failed to lookup transform from {current_reference_frame} to {target_reference_frame}')
             return None
         return self.tf_listener.transformPose(target_reference_frame, input_pose)
 
-    def execute_path(self, path, model_name, offset_during_execution=[0,0,0,0,0,0], speed=0.07):
+    def execute_path(self, path, model_name, offset_during_execution=[0, 0, 0, 0, 0, 0], speed=0.07):
         '''
         let a model in gazebo to execute a navigation path
         model_offset = [x, y, z, roll, pitch, yaw]
@@ -273,14 +321,19 @@ class GazeboModelNavigation:
         transform[1][3] = offset[1]
         transform[2][3] = offset[2]
         pose_stamped_msg = self.make_pose_stamped_from_transform(
-                                np.dot(model_to_world_tf, transform), pose.header.frame_id)
+            np.dot(model_to_world_tf, transform), pose.header.frame_id
+        )
         # apply rotation to a pose
-        rot = [pose_stamped_msg.pose.orientation.x, pose_stamped_msg.pose.orientation.y,
-               pose_stamped_msg.pose.orientation.z, pose_stamped_msg.pose.orientation.w]
+        rot = [
+            pose_stamped_msg.pose.orientation.x,
+            pose_stamped_msg.pose.orientation.y,
+            pose_stamped_msg.pose.orientation.z,
+            pose_stamped_msg.pose.orientation.w,
+        ]
         euler_rot = list(tf.transformations.euler_from_quaternion(rot))
-        euler_rot[0] += offset[3] # roll
-        euler_rot[1] += offset[4] # pitch
-        euler_rot[2] += offset[5] # yaw
+        euler_rot[0] += offset[3]  # roll
+        euler_rot[1] += offset[4]  # pitch
+        euler_rot[2] += offset[5]  # yaw
         q = tf.transformations.quaternion_from_euler(euler_rot[0], euler_rot[1], euler_rot[2])
         pose_stamped_msg.pose.orientation.x = q[0]
         pose_stamped_msg.pose.orientation.y = q[1]
@@ -288,8 +341,14 @@ class GazeboModelNavigation:
         pose_stamped_msg.pose.orientation.w = q[3]
         return pose_stamped_msg
 
-    def model_navigation(self, model_name, goal_pose, offset_at_start=[0,0,0,0,0,0],
-                               offset_during_execution=[0,0,0,0,0,0], speed=0.07):
+    def model_navigation(
+        self,
+        model_name,
+        goal_pose,
+        offset_at_start=[0, 0, 0, 0, 0, 0],
+        offset_during_execution=[0, 0, 0, 0, 0, 0],
+        speed=0.07,
+    ):
         '''
         make a gazebo model to navigate in the environment by calling teletransport method multiple times
         offset_at_start = [x, y, z, roll, pitch, yaw]
@@ -312,10 +371,15 @@ class GazeboModelNavigation:
         while not rospy.is_shutdown():
             if self.model_goal_request_received:
                 self.model_goal_request_received = False
-                self.model_navigation(self.model_name, self.model_goal_pose,
-                                      offset_at_start=self.offset_at_start,
-                                      offset_during_execution=self.offset_during_execution, speed=0.07)
+                self.model_navigation(
+                    self.model_name,
+                    self.model_goal_pose,
+                    offset_at_start=self.offset_at_start,
+                    offset_during_execution=self.offset_during_execution,
+                    speed=0.07,
+                )
             r.sleep()
+
 
 if __name__ == '__main__':
     rospy.init_node('gazebo_model_navigation')
