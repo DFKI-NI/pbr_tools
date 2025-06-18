@@ -55,11 +55,11 @@
 
     <!-- A global light source -->
     <include>
-      <uri>model://sun</uri>
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Sun</uri>
     </include>
     <!-- A ground plane -->
     <include>
-      <uri>model://ground_plane</uri>
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Ground Plane</uri>
     </include>
 
     <model name="pbr_cic">
@@ -69,7 +69,7 @@
         <collision name="pbr_cic_collision">
           <geometry>
             <mesh>
-              <uri>file://pbr_cic.stl</uri>
+              <uri>package://pbr_cic.stl</uri>
               <scale>1.0 1.0 1.0</scale>
             </mesh>
           </geometry>
@@ -78,7 +78,7 @@
           <cast_shadows>false</cast_shadows>
           <geometry>
             <mesh>
-              <uri>file://pbr_cic.stl</uri>
+              <uri>package://pbr_cic.stl</uri>
               <scale>1.0 1.0 1.0</scale>
             </mesh>
           </geometry>

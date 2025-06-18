@@ -1,7 +1,7 @@
-This package contains a gazebo_world of the ICO office environment, and launch files to start gazebo and spawn Tiago in it.
+This package contains a gazebo_world of the ICO, MOELK and CIC office environments.
 
-To start the ICO environment and spawn Tiago, you can use the launch-file launch/tiago_ico.launch.
-Before you start it the first time you have to copy the config-file config/pose.yaml to ~/.pal/pose.yaml.
-This provides amcl-localization with Tiagos initial pose in that environment.
+The urdf folder contains urdf files of the pbr_robot_lab, as well as simulated rgb_camera urdfs connected to the CIC walls to simulate the insect hotel demo cameras.
 
-The 2d-map that the environment is based on can be found in config/ico.
+The nodes folder has the gazebo_unpauser script used during startup of Gazebo in ROS1, which fixes some issues during the spawning of the objects and setting the initial arm pose. Other than that it contains a script to get object poses of objects in Gazebo automatically in XML format.
+
+In the Media/models folder, the walls of the pbr_robot_lab and pbr_cic environments are located.
