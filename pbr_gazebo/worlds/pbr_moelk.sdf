@@ -2,96 +2,19 @@
 <sdf version="1.5">
   <world name="pbr_moelk">
 
-    <!-- physics profile: fast, see: https://classic.gazebosim.org/tutorials?tut=preset_manager&cat=physics -->
-    <physics name="fast" type="ode" default="true">
-      <gravity>0.0 0.0 -9.81</gravity>
-      <ode>
-        <solver>
-          <type>quick</type>
-          <iters>50</iters>
-          <sor>1.3</sor>
-        </solver>
-        <constraints>
-          <cfm>0.0</cfm>
-          <erp>0.2</erp>
-          <contact_max_correcting_vel>100.0</contact_max_correcting_vel>
-          <contact_surface_layer>0.0</contact_surface_layer>
-        </constraints>
-      </ode>
-
-      <!-- the combination of the next 2 parameters makes simulation faster,
-           see: https://ceti.pages.st.inf.tu-dresden.de/robotics/howtos/SimulationSpeed.html -->
-      <real_time_update_rate>0.0</real_time_update_rate>  <!-- run as fast as possible -->
-      <max_step_size>0.003</max_step_size>
-
-      <max_contacts>20</max_contacts>
-    </physics>
-
-    <!-- physics profile: slow, see: https://classic.gazebosim.org/tutorials?tut=preset_manager&cat=physics -->
-    <physics name="slow" type="ode">
-      <gravity>0.0 0.0 -9.81</gravity>
-      <ode>
-        <solver>
-          <type>quick</type>
-          <iters>20</iters>
-          <sor>1.0</sor>
-        </solver>
-        <constraints>
-          <cfm>0.0</cfm>
-          <erp>0.2</erp>
-          <contact_max_correcting_vel>100.0</contact_max_correcting_vel>
-          <contact_surface_layer>0.0</contact_surface_layer>
-        </constraints>
-      </ode>
-
-      <!-- the combination of the next 2 parameters makes simulation slow,
-           see: https://ceti.pages.st.inf.tu-dresden.de/robotics/howtos/SimulationSpeed.html
-           this values are the default ones from gazebo -->
-      <real_time_update_rate>1000.0</real_time_update_rate>  <!-- simulate max. 1000 steps per second (wall time) -->
-      <max_step_size>0.001</max_step_size>
-
-      <max_contacts>20</max_contacts>
-    </physics>
-
     <!-- A global light source -->
     <include>
-      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Sun</uri>
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/sun</uri>
     </include>
     <!-- A ground plane -->
     <include>
       <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Ground Plane</uri>
     </include>
 
-    <model name="pbr_moelk">
-      <static>true</static>
-      <link name="pbr_moelk_link">
-        <pose>0 0 0 0 0 0</pose>
-        <collision name="pbr_moelk_collision">
-          <geometry>
-            <mesh>
-              <uri>package://pbr_robot_lab.stl</uri>
-              <scale>1.0 1.0 1.0</scale>
-            </mesh>
-          </geometry>
-        </collision>
-        <visual name="pbr_moelk_visual">
-          <cast_shadows>false</cast_shadows>
-          <geometry>
-            <mesh>
-              <uri>package://pbr_robot_lab.stl</uri>
-              <scale>1.0 1.0 1.0</scale>
-            </mesh>
-          </geometry>
-        </visual>
-      </link>
-    </model>
+    <include>
+      <uri>model://pbr_gazebo/models/moelk</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
 
-    <gui fullscreen='0'>
-      <camera name='user_camera'>
-        <pose frame=''>15.96204 4.53222 2.72129 0 0.455643 -2.779</pose>
-        <view_controller>orbit</view_controller>
-        <projection_type>perspective</projection_type>
-      </camera>
-    </gui>
   </world>
 </sdf>

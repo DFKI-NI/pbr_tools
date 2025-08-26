@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.6">
-  <world name="pbr_cic">
+  <world name="empty">
 
     <!-- A global light source -->
     <include>
@@ -9,11 +9,6 @@
     <!-- A ground plane -->
     <include>
       <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Ground Plane</uri>
-    </include>
-
-    <include>
-      <uri>model://pbr_gazebo/models/cic</uri>
-      <pose>0 0 0 0 0 0</pose>
     </include>
 
   </world>

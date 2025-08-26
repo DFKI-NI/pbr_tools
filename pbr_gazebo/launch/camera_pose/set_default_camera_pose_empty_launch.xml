@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+
+  <include file="$(find-pkg-share pbr_gazebo)/launch/camera_pose/set_default_camera_pose.launch.py">
+    <!-- use "gz topic - -echo - -topic /gui/camera/pose" to adjust  values -->
+    <arg name="delay" value="2.0"/>
+    <arg name="x" value="0.8133"/>
+    <arg name="y" value="-0.8615"/>
+    <arg name="z" value="1.3894"/>
+    <arg name="qx" value="-0.0988"/>
+    <arg name="qy" value="0.0434"/>
+    <arg name="qz" value="0.9103"/>
+    <arg name="qw" value="0.3996"/>
+  </include>
+
+</launch>

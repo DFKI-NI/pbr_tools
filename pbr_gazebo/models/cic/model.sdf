@@ -1,0 +1,31 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='cic'>
+    <static>true</static>
+      <link name="pbr_cic_link">
+        <pose>0 0 0 0 0 0</pose>
+        <collision name="pbr_cic_collision">
+          <geometry>
+            <mesh>
+              <uri>model://pbr_gazebo/models/cic/meshes/pbr_cic.stl</uri>
+              <scale>1.0 1.0 1.0</scale>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name="pbr_cic_visual">
+          <cast_shadows>false</cast_shadows>
+          <geometry>
+            <mesh>
+              <uri>model://pbr_gazebo/models/cic/meshes/pbr_cic.stl</uri>
+              <scale>1.0 1.0 1.0</scale>
+            </mesh>
+          </geometry>
+          <material> <!-- Gazebo/Grey -->
+            <ambient>1 1 1 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+          </material>
+        </visual>
+      </link>
+  </model>
+</sdf>
