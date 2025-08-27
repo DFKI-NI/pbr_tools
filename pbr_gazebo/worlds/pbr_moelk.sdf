@@ -10,6 +10,10 @@
     <include>
       <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Ground Plane</uri>
     </include>
+    <!-- Turn off the built-in grid -->
+    <scene>
+      <grid>false</grid>
+    </scene>
 
     <include>
       <uri>model://pbr_gazebo/models/moelk</uri>
