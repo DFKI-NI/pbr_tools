@@ -8,7 +8,7 @@
         <geometry>
           <box size="${width} ${length} ${height}"/>
         </geometry>
-        <material name="orange"> <!-- rviz will use this color -->
+        <material name="orange">
           <color rgba="${255/255} ${108/255} ${10/255} 1.0"/>
         </material>
       </visual>
@@ -26,9 +26,6 @@
                 izz="2.0064271e-03" />
       </inertial>
     </link>
-    <gazebo reference="${name}_box">
-      <material>Gazebo/${color}</material> <!-- gazebo will use this color -->
-    </gazebo>
   </xacro:macro>
 
   <!-- example on how to call this macro -->

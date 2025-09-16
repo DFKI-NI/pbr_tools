@@ -7,6 +7,9 @@
         <geometry>
           <cylinder length="0.01" radius="0.03"/>
         </geometry>
+        <material name="light_green">
+          <color rgba="0 1 0 0.3"/>
+        </material>
       </visual>
       <collision>
         <geometry>
@@ -21,15 +24,15 @@
                  izz="2.0064271e-03" />
       </inertial>
     </link>
-    <gazebo reference="${camera_name}_link">
-      <material>Gazebo/GreenTransparent</material>
-    </gazebo>
 
     <link name="${camera_name}_box_link">
       <visual>
         <geometry>
           <box size="0.1 0.1 0.03"/>
         </geometry>
+        <material name="grey">
+          <color rgba="0.5 0.5 0.5 1"/>
+        </material>
       </visual>
       <collision>
         <geometry>
@@ -44,9 +47,6 @@
                  izz="2.0064271e-03" />
       </inertial>
     </link>
-    <gazebo reference="${camera_name}_box_link">
-      <material>Gazebo/Gray</material>
-    </gazebo>
 
     <joint name="${camera_name}_box_link_to_${camera_name}_link" type="fixed">
       <parent link="${camera_name}_box_link"/>
